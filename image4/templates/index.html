@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Image Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Text-to-Image Generator</h1>
+        <form action="/" method="post">
+            <label for="prompt">Enter Prompt:</label>
+            <input type="text" id="prompt" name="prompt" required>
+            
+            <label for="background_style">Background Style:</label>
+            <input type="text" id="background_style" name="background_style" required>
+            
+            <label for="tone">Tone:</label>
+            <input type="text" id="tone" name="tone" required>
+
+            <label for="num_images">Number of Images:</label>
+            <input type="number" id="num_images" name="num_images" min="1" max="5" value="1" required>
+
+            <label for="image_size">Image Size (px):</label>
+            <input type="number" id="image_size" name="image_size" min="256" max="1024" value="512" required>
+
+            <button type="submit">Generate Images</button>
+        </form>
+
+        {% if images %}
+            <h2>Generated Images:</h2>
+            <div class="image-container">
+                {% for image in images %}
+                    <div class="image-box">
+                        <img src="{{ url_for('static', filename='images/' + image.split('/')[-1]) }}" alt="Generated Image">
+                        <a href="{{ url_for('download', filename=image.split('/')[-1]) }}" download>Download</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
